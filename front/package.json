@@ -1,0 +1,7 @@
+{
+  "name": "front",
+  "packageManager": "yarn@3.6.4",
+  "dependencies": {
+    "vue": "^3.3.4"
+  }
+}
