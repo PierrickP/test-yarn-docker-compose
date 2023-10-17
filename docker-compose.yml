@@ -1,0 +1,37 @@
+version: "3.6"
+
+services:
+  front:
+    build:
+      context: .
+      dockerfile: front/Dockerfile
+      args:
+        - NODE_ENV=development
+    volumes:
+      - ./front:/opt/node_app/app:delegated
+      - ./front/package.json:/opt/node_app/package.json
+      - ./yarn.lock:/opt/node_app/yarn.lock:cached
+      - notused:/opt/node_app/app/node_modules
+    ports:
+      - "5173"
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+      args:
+        - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/opt/node_app/app:delegated
+      - ./server/package.json:/opt/node_app/package.json
+      - ./yarn.lock:/opt/node_app/yarn.lock:cached
+      - notused:/opt/node_app/app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: "node --watch ./index.js"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+volumes:
+  notused:
